@@ -1,0 +1,6 @@
+Manifest-Version: 1.0
+Agent-Class: net.modevelin.agent.Agent
+Premain-Class: net.modevelin.agent.Agent
+Can-Redefine-Classes: true
+Can-Retransform-Classes: true
+

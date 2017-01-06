@@ -1,0 +1,52 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+	
+	<parent>
+        <groupId>net.modevelin</groupId>
+        <artifactId>modevelin</artifactId>
+        <version>1.0.0-SNAPSHOT</version>
+    </parent>
+	
+	<groupId>net.modevelin.core</groupId>
+	<artifactId>modevelin-core</artifactId>
+	<packaging>jar</packaging>
+	<name>Modevelin Core (Server and Agent)</name>
+
+	<properties>
+		<maven.jar.plugin.version>2.4</maven.jar.plugin.version>
+	</properties>
+
+	<build>
+		<plugins>
+			<plugin>
+        		<groupId>org.apache.maven.plugins</groupId>
+		        <artifactId>maven-jar-plugin</artifactId>
+		        <version>${maven.jar.plugin.version}</version>
+		        <configuration>
+		        	 <archive>
+            			<manifestFile>src/main/resources/META-INF/MANIFEST.MF</manifestFile>
+	          		</archive>
+		        </configuration>
+		      </plugin>
+		</plugins>
+	</build>
+
+	<dependencies>
+		<dependency>
+    		<groupId>org.ow2.asm</groupId>
+    		<artifactId>asm</artifactId>
+    		<version>5.0.4</version>
+		</dependency>
+		<dependency>
+			<groupId>com.sun</groupId>
+			<artifactId>tools</artifactId>
+			<version>${jdk.version}</version>
+			<scope>system</scope>
+			<systemPath>${java.home}/../lib/tools.jar</systemPath>
+		</dependency>
+	</dependencies>
+
+	
+</project>
