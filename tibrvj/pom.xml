@@ -17,6 +17,12 @@
 	<dependencies>
 
 		<dependency>
+			<groupId>net.modevelin.agent</groupId>
+			<artifactId>modevelin-agent</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+
+		<dependency>
 			<groupId>tibrvj</groupId>
 			<artifactId>tibrvj</artifactId>
 			<version>8.4.5</version>

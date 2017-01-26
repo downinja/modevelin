@@ -25,7 +25,7 @@ public class JarBytesSupport {
 				if (jarEntryName.endsWith(".class")) {
 					String className = jarEntryName.substring(0, jarEntryName.length() - 6);
 					classToRedefine = classToRedefine.replace('.', '/');
-					if (className.equals(classToRedefine) || className.startsWith(classToRedefine + "$")) {
+					if (className.equals(classToRedefine)) {// || className.startsWith(classToRedefine + "$")) {
 						//LOGGER.info("getting bytes for redefinition of {}", className);
 						InputStream is = jarFile.getInputStream(jarEntry);
 						ByteArrayOutputStream baos = new ByteArrayOutputStream();

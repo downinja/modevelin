@@ -67,6 +67,12 @@ public class Server {
 				if (payload != null) {
 					send(agentServer, Integer.parseInt(agentPort), payload);
 				}
+				Properties tibmsg = new Properties();
+				tibmsg.put("BODY", "FOO");
+				tibmsg.put("SENDSUBJ","FOO2YOU");
+				tibmsg.put("REPLYSUB", "FROMFOO");
+				Thread.sleep(2000);
+				send(agentServer, Integer.parseInt(agentPort), tibmsg);
 			}
 		}
 

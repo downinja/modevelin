@@ -1,7 +1,6 @@
 package net.modevelin.test;
 
 import com.tibco.tibrv.Tibrv;
-import com.tibco.tibrv.TibrvException;
 import com.tibco.tibrv.TibrvListener;
 import com.tibco.tibrv.TibrvMsg;
 import com.tibco.tibrv.TibrvMsgCallback;
@@ -50,11 +49,7 @@ public class Main {
 	private static class TibcoListener implements TibrvMsgCallback {
 		
 		public void onMsg(TibrvListener listener, TibrvMsg msg)	{
-			
 			System.out.println((new Date()).toString() + ": subject=" + msg.getSendSubject() + ", reply=" + msg.getReplySubject() + ", message=" + msg.toString());
-
-			System.out.flush();
-
 		}
 	}
 	

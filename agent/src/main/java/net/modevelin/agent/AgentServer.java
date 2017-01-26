@@ -172,6 +172,7 @@ public class AgentServer {
 					synchronized(initialCallbackMonitor) {
 						receivedObject = oisObj;
 						initialCallbackMonitor.notifyAll();
+						MessageHandler.foo(oisObj);
 					}
 
 				}

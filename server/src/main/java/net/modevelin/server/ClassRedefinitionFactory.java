@@ -24,7 +24,7 @@ public class ClassRedefinitionFactory {
 
 		// obvs these would be driven by config not hard coded
 		
-		BytesProvider executorsProvider = (BytesProvider)Class.forName("net.modevelin.executors.ExecutorsProvider").newInstance();
+		BytesProvider executorsProvider = (BytesProvider)Class.forName("net.modevelin.executors.ThreadPoolExecutorAsmProvider").newInstance();
 		Map<String, byte[]> bytesMap = executorsProvider.getBytes(null);
 		for (String className : bytesMap.keySet()) {
 			initialDefinitions.put(className, bytesMap.get(className));
@@ -36,6 +36,9 @@ public class ClassRedefinitionFactory {
 
 		bytes = getJarBytes(tibrvJarPath, "com.tibco.tibrv.TibrvListener");
 		initialDefinitions.put("com/tibco/tibrv/TibrvListener", bytes);
+		
+		bytes = getJarBytes(tibrvJarPath, "net.modevelin.tibrv.AgentMessageHandler");
+		initialDefinitions.put("net/modevelin/tibrv/AgentMessageHandler", bytes);
 
 		bytes = getJarBytes(tibrvJarPath, "com.tibco.tibrv.TibrvRvdTransport");
 		initialDefinitions.put("com/tibco/tibrv/TibrvRvdTransport", bytes);
