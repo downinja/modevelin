@@ -1,5 +1,7 @@
 package com.tibco.tibrv;
- 
+
+import net.modevelin.agent.AgentServer;
+
 public class TibrvCmTransport extends TibrvTransport {
 
 	public TibrvCmTransport(final com.tibco.tibrv.TibrvRvdTransport rvdTransport) throws TibrvException {
@@ -9,16 +11,13 @@ public class TibrvCmTransport extends TibrvTransport {
 	}
 
 	public void send(final com.tibco.tibrv.TibrvMsg message) throws com.tibco.tibrv.TibrvException {
-		//TestAgentResponse response = new TestAgentResponseBuilder(TestAgentResponseType.DEAL_MESSAGE).payload(message.toString()).build();
-		//TestAgent.getInstance().sendResponse(response);
+		//AgentServer.getInstance().send(message.toString());
 	}
 	
 	public void addListener(final String arg1, final String arg2) {
 		
 	}
 	
-	@Override
-	public void destroy() {
-	}
+	
 
 }

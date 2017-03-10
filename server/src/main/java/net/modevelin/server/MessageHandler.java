@@ -6,16 +6,18 @@ import java.util.Properties;
 public class MessageHandler {
 
 	private ClassRedefinitionFactory redefinitionFactory;
+	
+	private Server server;
 
-	public void setClassRedefinitionFactory(final ClassRedefinitionFactory redefinitionFactory) {
+	void setClassRedefinitionFactory(final ClassRedefinitionFactory redefinitionFactory) {
 		this.redefinitionFactory = redefinitionFactory;
 	}
+	
+	void setServer(final Server server) {
+		this.server = server;
+	}
 
-	// presume can have e.g. multiple outgoing messages etc,
-	// but only one sync one e.g. request/response. any others can
-	// be sent internally. In fact, can they all be sent internally
-	// e.g. we pass the "live" socket from the Server class to some co-ordinator class?
-	Properties handle(final Properties message) {
+	void handle(final Properties message) {
 
 		// What might we want to do, here?
 		// We might want to supply new class definitions (either on startup, or in response
@@ -32,9 +34,25 @@ public class MessageHandler {
 			Properties response = new Properties();
 			response.putAll(message);
 			response.put("PAYLOAD", initialRedefinitions);
-			return response;
+			String agentServer = response.getProperty("HOST");
+			String agentPort = response.getProperty("PORT");
+			server.send(agentServer, Integer.parseInt(agentPort), response);
 		}
-		throw new RuntimeException("Unrecognised command: " + command);
+		else if ("READY".equals(command)) {
+			Properties response = new Properties();
+			response.putAll(message);
+			response.put("COMMAND", "TIBMSG");
+			response.put("BODY", "FOO");
+			response.put("SENDSUBJ","FOO2YOU");
+			response.put("REPLYSUB", "FROMFOO");
+			String agentServer = response.getProperty("HOST");
+			String agentPort = response.getProperty("PORT");
+			server.send(agentServer, Integer.parseInt(agentPort), response);
+			// Now wait for response from app and verify against expected result
+		}
+		else {
+			throw new RuntimeException("Unrecognised command: " + command);
+		}
 	}
 
 }

@@ -13,10 +13,5 @@ public class TibrvRvdTransport extends com.tibco.tibrv.TibrvNetTransport {
 		
 	}
 
-	@Override
-	public void destroy() {
-		// TODO Auto-generated method stub
-		
-	}
 	
 }

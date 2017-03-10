@@ -56,26 +56,15 @@ public class Server {
 		socketThread.setDaemon(true);
 		socketThread.start();
 
-		synchronized (initialCallbackMonitor) {
-			initialCallbackMonitor.wait();
-			if (receivedObject != null) {
-				Properties messageIn = (Properties)receivedObject;
-				Properties messageOut =  handler.handle(messageIn);
-				String agentServer = messageOut.getProperty("HOST");
-				String agentPort = messageOut.getProperty("PORT");
-				Object payload = messageOut.get("PAYLOAD");
-				if (payload != null) {
-					send(agentServer, Integer.parseInt(agentPort), payload);
+		while(started) {
+			synchronized (initialCallbackMonitor) {
+				initialCallbackMonitor.wait();
+				if (receivedObject != null) {
+					Properties messageIn = (Properties)receivedObject;
+					handler.handle(messageIn);
 				}
-				Properties tibmsg = new Properties();
-				tibmsg.put("BODY", "FOO");
-				tibmsg.put("SENDSUBJ","FOO2YOU");
-				tibmsg.put("REPLYSUB", "FROMFOO");
-				Thread.sleep(2000);
-				send(agentServer, Integer.parseInt(agentPort), tibmsg);
 			}
 		}
-
 	}
 
 	public synchronized void stop() {
@@ -84,6 +73,9 @@ public class Server {
 			return;
 		}
 		started = false;
+		synchronized (initialCallbackMonitor) {
+			initialCallbackMonitor.notifyAll();
+		}
 	}
 
 	public synchronized void send(final String sendHost, final int sendPort, final Object sendObj) {
@@ -162,6 +154,7 @@ public class Server {
 		MessageHandler messageHandler = new MessageHandler();
 		ClassRedefinitionFactory redefinitionFactory = new ClassRedefinitionFactory();
 		messageHandler.setClassRedefinitionFactory(redefinitionFactory);
+		messageHandler.setServer(server);
 		server.setMessageHandler(messageHandler);
 		server.start();
 	}

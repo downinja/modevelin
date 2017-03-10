@@ -31,8 +31,8 @@ public class ClassRedefinitionFactory {
 		}
 
 		String tibrvJarPath = "C:\\Users\\john\\dev\\github\\modevelin\\tibrvj\\target\\modevelin-tibrvj-1.0.0-SNAPSHOT.jar";
-		byte[] bytes = getJarBytes(tibrvJarPath, "com.tibco.tibrv.TibrvCmTransport");
-		initialDefinitions.put("com/tibco/tibrv/TibrvCmTransport", bytes);
+		byte[] bytes = getJarBytes(tibrvJarPath, "com.tibco.tibrv.TibrvTransport");
+		initialDefinitions.put("com/tibco/tibrv/TibrvTransport", bytes);
 
 		bytes = getJarBytes(tibrvJarPath, "com.tibco.tibrv.TibrvListener");
 		initialDefinitions.put("com/tibco/tibrv/TibrvListener", bytes);

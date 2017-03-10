@@ -49,6 +49,7 @@ public class AttachOnStartAgent {
 	 * @param agentArgs
 	 * @param instrumentation
 	 */
+	@SuppressWarnings("unchecked")
 	public static void premain(final String agentArgs, final Instrumentation instrumentation) {
 
 		LOGGER.info("premain("+ agentArgs + "," + instrumentation + ")");
@@ -75,26 +76,27 @@ public class AttachOnStartAgent {
 			}
 
 			// Configure a connection to the back-end Server.
-			agentServer = new AgentServer(agentProperties);
+			agentServer = AgentServer.getInstance(agentProperties);
 
 			// Start the connection to the server; this will immediately return us a list
 			// of class redefinitions to use on application startup.
-			Map<String, byte[]> definitions = agentServer.start();
-
-			if (definitions != null) {
+			Properties initialProperties = agentServer.start();
+			if (initialProperties != null && initialProperties.containsKey("PAYLOAD")) {
 				
-				// Not all bytes received from the server may be redefinitions - 
-				// some may be supporting classes. These will need to be visible
-				// to redefinitions which reference them, and the easiest way to
-				// do this seems to be to stick them on the system classloader.
-				JarFile jarFile = createDefinitionsJarFile(definitions); 
-				instrumentation.appendToSystemClassLoaderSearch(jarFile);
-				
-				// Now we can add ClassFileTransformer to the VM so that our redefinitions
-				// are used in place of any classes provided by/with the application.
-				instrumentation.addTransformer(new AgentClassFileTransformer(definitions));
+				Map<String, byte[]> definitions = (Map<String, byte[]>)initialProperties.get("PAYLOAD");
+				if (definitions != null) {
+					// Not all bytes received from the server may be redefinitions - 
+					// some may be supporting classes. These will need to be visible
+					// to redefinitions which reference them, and the easiest way to
+					// do this seems to be to stick them on the system classloader.
+					JarFile jarFile = createDefinitionsJarFile(definitions); 
+					instrumentation.appendToSystemClassLoaderSearch(jarFile);
+					
+					// Now we can add ClassFileTransformer to the VM so that our redefinitions
+					// are used in place of any classes provided by/with the application.
+					instrumentation.addTransformer(new AgentClassFileTransformer(definitions));
+				}
 			}
-
 		}
 		catch (Exception ex) {
 			rethrowAsRuntimeException(ex);
@@ -110,13 +112,14 @@ public class AttachOnStartAgent {
 		}
 		
 		@Override
-		public byte[] transform(
-		ClassLoader loader,
-		String className,
-		Class<?> classBeingRedefined,
-		ProtectionDomain protectionDomain,
-		byte[] classfileBuffer)
-		throws IllegalClassFormatException {
+		public byte[] transform (
+			final ClassLoader loader, 
+			final String className, 
+			final Class<?> classBeingRedefined,
+			final ProtectionDomain protectionDomain, 
+			final byte[] classfileBuffer) 
+		throws 
+			IllegalClassFormatException {
 
 			for (String definitionClassName : definitions.keySet()) {
 				if (definitionClassName.equals(className)) {
@@ -127,15 +130,14 @@ public class AttachOnStartAgent {
 			return null;
 		}
 	}
-	
 
 	private static JarFile createDefinitionsJarFile(final Map<String, byte[]> definitions) throws Exception {
 		
 		long now = System.currentTimeMillis();
 		
 		File jarFile = tmpDirectory == null ? 
-			File.createTempFile("Modevelin", ".jar") :
-				new File(tmpDirectory, "Modevelin" + now + ".jar");
+			File.createTempFile("Modevelin-" + agentName, ".jar") :
+				new File(tmpDirectory, "Modevelin-" + agentName + now + ".jar");
 		// mark for deletion on exit.
 		jarFile.deleteOnExit();
 		

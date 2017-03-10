@@ -18,18 +18,19 @@ public class AgentMessageHandler implements MessageProcessor {
 	public AgentMessageHandler(final TibrvListener listener, final TibrvMsgCallback callback) {
 		this.callback = callback;
 		this.listener = listener;
-		MessageHandler.addHandler("foo", this);
+		MessageHandler.addHandler("TIBMSG", this);
 	}
 	
 	@Override
-	public void process(final Object obj) {
-		// pull relevant fields out of props (e.g. TibrvMsg) and invoke callback
+	public void process(final Properties props) {
+		// TibrvMsg isn't directly Serializable, so we have to reconstruct one
+		// from the message properties.
 		try {
-			Properties props = (Properties)obj;
 			String body = props.getProperty("BODY");
 			String sendSubj = props.getProperty("SENDSUBJ");
 			String receiveSubj = props.getProperty("REPLYSUBJ");
 			TibrvMsg msg = new TibrvMsg();
+			msg.add("BODY", body);
 			msg.setSendSubject(sendSubj);
 			msg.setReplySubject(receiveSubj);
 			callback.onMsg(listener, msg);

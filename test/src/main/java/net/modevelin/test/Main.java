@@ -12,6 +12,8 @@ import java.util.concurrent.Executors;
 
 public class Main {
 
+	private static TibrvRvdTransport TRANSPORT;
+	
 	public static Runnable process(final Runnable runnable) {
 		Runnable wrapper = new Runnable() {
 			@Override
@@ -39,9 +41,9 @@ public class Main {
 		String subject = "SOME.SUBJECT";
 
 		Tibrv.open(Tibrv.IMPL_NATIVE);
-		TibrvRvdTransport transport = new TibrvRvdTransport(service, network, daemon);
+		TRANSPORT = new TibrvRvdTransport(service, network, daemon);
 
-		new TibrvListener(Tibrv.defaultQueue(), new TibcoListener(), transport, subject, null);
+		new TibrvListener(Tibrv.defaultQueue(), new TibcoListener(), TRANSPORT, subject, null);
 
 		Thread.sleep(10000);
 	}
@@ -50,6 +52,18 @@ public class Main {
 		
 		public void onMsg(TibrvListener listener, TibrvMsg msg)	{
 			System.out.println((new Date()).toString() + ": subject=" + msg.getSendSubject() + ", reply=" + msg.getReplySubject() + ", message=" + msg.toString());
+			
+			// TODO, send a response and pick up in server
+			try {
+				TibrvMsg response = new TibrvMsg();
+				response.add("BODY", "bar");
+				response.setSendSubject("SENDSUBJ");
+				response.setReplySubject("RECEIVESUBJ");
+				TRANSPORT.send(response);
+			}
+			catch (Exception ex) {
+				ex.printStackTrace();
+			}
 		}
 	}
 	

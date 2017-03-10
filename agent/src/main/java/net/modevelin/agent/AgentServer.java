@@ -7,31 +7,54 @@ import java.io.ObjectOutputStream;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.Collections;
-import java.util.Map;
 import java.util.Properties;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import net.modevelin.agent.MessageHandler.MessageProcessor;
 
 public class AgentServer {
 
 	private static final Logger LOGGER = Logger.getLogger(AgentServer.class.getName());
 
-	private final int backendPort;
+	private int backendPort;
+	
+	private ExecutorService executorService;
 
-	private final Object initialCallbackMonitor;
+	private InitialMessageProcessor initialMessageProcessor;
 
-	private final String backendHost;
+	private String localHost;
+	
+	private String backendHost;
 
-	private final String agentName;
-
-	private Object receivedObject;
+	private String agentName;
 
 	private ServerSocket receiveSocket;
 
 	private volatile boolean started;
+	
+	private static AgentServer INSTANCE;
 
-	public AgentServer(final Properties agentProperties) {
+	public static synchronized AgentServer getInstance(final Properties properties) {
+		if (INSTANCE == null) {
+			INSTANCE = new AgentServer(properties);
+		}
+		else {
+			// TODO, check properties the same as the ones we already have
+		}
+		return INSTANCE;
+	}
+	
+	public static synchronized AgentServer getInstance() {
+		if (INSTANCE == null) {
+			throw new RuntimeException("AgentServer has not been initialised");
+		}
+		return INSTANCE;
+	}
+	
+	private AgentServer(final Properties agentProperties) {
 
 		String hostProperty = agentProperties.getProperty("host");
 		if (hostProperty == null || hostProperty.trim().isEmpty()) {
@@ -53,21 +76,22 @@ public class AgentServer {
 		this.backendPort = Integer.parseInt(portProperty);
 		try {
 			this.receiveSocket = new ServerSocket();
+			this.localHost = InetAddress.getLocalHost().getHostName();
 		}
 		catch (Exception ex) {
 			rethrowAsRuntimeException(ex);
 		}
 
-		this.initialCallbackMonitor = new Object();
+		this.executorService = Executors.newSingleThreadExecutor(); // TODO, give it a name
+		this.initialMessageProcessor = new InitialMessageProcessor();
 
 	}
 
-	@SuppressWarnings("unchecked")
-	public synchronized Map<String, byte[]> start() {
+	public synchronized Properties start() {
 
 		if (started) {
 			LOGGER.log(Level.INFO, "Call to SocketManager.start(), but already started");
-			return Collections.emptyMap();
+			return initialMessageProcessor.receivedObject;
 		}
 
 		try {
@@ -84,15 +108,32 @@ public class AgentServer {
 		socketThread.start();
 
 		try {
-			synchronized (initialCallbackMonitor) {
+			
+			MessageHandler.addHandler("REGISTER_AGENT", initialMessageProcessor);
+			
+			synchronized (initialMessageProcessor) {
 				Properties props = new Properties();
 				props.put("COMMAND", "REGISTER_AGENT");
-				props.put("NAME", agentName);
-				props.put("HOST", InetAddress.getLocalHost().getHostName());
-				props.put("PORT", Integer.toString(receiveSocket.getLocalPort()));
 				send(props, true);
-				initialCallbackMonitor.wait();
-				return (Map<String, byte[]>)receivedObject;
+				initialMessageProcessor.wait();
+				
+				MessageHandler.removeHandler("REGISTER_AGENT", initialMessageProcessor);
+				
+				executorService.submit(new Runnable() {
+					@Override
+					public void run() {
+						try {
+							Thread.sleep(2000); // TODO - need to find some way of acking back that the app has started up
+							props.put("COMMAND", "READY");
+							send(props, true);
+						}
+						catch (Exception ex) {
+							LOGGER.log(Level.SEVERE, "Unable to send initial ack", ex);
+						}
+					}
+				});
+				
+				return initialMessageProcessor.receivedObject;
 			}
 		}
 		catch (Exception ex) {
@@ -109,14 +150,18 @@ public class AgentServer {
 		started = false;
 	}
 
-	public synchronized void send(final Object sendObj) {
+	public synchronized void send(final Properties sendObj) {
 		send(sendObj, false);
 	}
 
-	public synchronized void send(final Object sendObj, final boolean throwExceptionOnError) {
+	public synchronized void send(final Properties sendObj, final boolean throwExceptionOnError) {
 
 		LOGGER.log(Level.INFO, new StringBuilder("send(").append(sendObj).append(")").toString());
 
+		sendObj.put("NAME", agentName);
+		sendObj.put("HOST", localHost);
+		sendObj.put("PORT", Integer.toString(receiveSocket.getLocalPort()));
+		
 		Socket sendSocket = null;
 		ObjectOutputStream oos = null;
 		try {
@@ -166,15 +211,12 @@ public class AgentServer {
 					ois = new ObjectInputStream(clientSocket.getInputStream());
 					Object oisObj = ois.readObject();
 					LOGGER.log(Level.INFO, "received " + oisObj);
-					//@SuppressWarnings("unchecked")
-					//RECEIVE_TYPE osiObjCast = (RECEIVE_TYPE)oisObj;
-//					callback.handle(osiObjCast);
-					synchronized(initialCallbackMonitor) {
-						receivedObject = oisObj;
-						initialCallbackMonitor.notifyAll();
-						MessageHandler.foo(oisObj);
-					}
-
+					executorService.submit(new Runnable() {
+						@Override
+						public void run() {	
+							MessageHandler.handle((Properties)oisObj);
+						}
+					});
 				}
 				catch (Exception ex) {
 					LOGGER.log(Level.SEVERE, "ServerSocketRunner unable to process request", ex);
@@ -184,4 +226,18 @@ public class AgentServer {
 		}
 	}
 
+	private static class InitialMessageProcessor implements MessageProcessor {
+
+		private Properties receivedObject;
+		
+		@Override
+		public void process(Properties message) {
+			receivedObject = message;
+			synchronized(this) {
+				this.notifyAll();
+			}
+		}
+		
+	}
+	
 }
