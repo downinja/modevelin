@@ -81,9 +81,9 @@ public class AttachOnStartAgent {
 			// Start the connection to the server; this will immediately return us a list
 			// of class redefinitions to use on application startup.
 			Properties initialProperties = agentServer.start();
-			if (initialProperties != null && initialProperties.containsKey("PAYLOAD")) {
+			if (initialProperties != null && initialProperties.containsKey("REDEFINITIONS")) {
 				
-				Map<String, byte[]> definitions = (Map<String, byte[]>)initialProperties.get("PAYLOAD");
+				Map<String, byte[]> definitions = (Map<String, byte[]>)initialProperties.get("REDEFINITIONS");
 				if (definitions != null) {
 					// Not all bytes received from the server may be redefinitions - 
 					// some may be supporting classes. These will need to be visible
@@ -120,7 +120,7 @@ public class AttachOnStartAgent {
 			final byte[] classfileBuffer) 
 		throws 
 			IllegalClassFormatException {
-
+			
 			for (String definitionClassName : definitions.keySet()) {
 				if (definitionClassName.equals(className)) {
 					LOGGER.info("Redefining " + className);

@@ -56,7 +56,7 @@ public class Main {
 			// TODO, send a response and pick up in server
 			try {
 				TibrvMsg response = new TibrvMsg();
-				response.add("BODY", "bar");
+				response.add("BODY", "BAR");
 				response.setSendSubject("SENDSUBJ");
 				response.setReplySubject("RECEIVESUBJ");
 				TRANSPORT.send(response);

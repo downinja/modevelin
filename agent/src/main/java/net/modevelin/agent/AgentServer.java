@@ -116,23 +116,7 @@ public class AgentServer {
 				props.put("COMMAND", "REGISTER_AGENT");
 				send(props, true);
 				initialMessageProcessor.wait();
-				
 				MessageHandler.removeHandler("REGISTER_AGENT", initialMessageProcessor);
-				
-				executorService.submit(new Runnable() {
-					@Override
-					public void run() {
-						try {
-							Thread.sleep(2000); // TODO - need to find some way of acking back that the app has started up
-							props.put("COMMAND", "READY");
-							send(props, true);
-						}
-						catch (Exception ex) {
-							LOGGER.log(Level.SEVERE, "Unable to send initial ack", ex);
-						}
-					}
-				});
-				
 				return initialMessageProcessor.receivedObject;
 			}
 		}

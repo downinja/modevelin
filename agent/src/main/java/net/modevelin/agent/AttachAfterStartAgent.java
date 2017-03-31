@@ -53,7 +53,7 @@ public class AttachAfterStartAgent {
 
 	public static synchronized void redefine(final List<ClassDefinition> redefinitions) {
 
-		System.out.println("redefine("+ redefinitions + ")");
+		LOGGER.info("redefine("+ redefinitions + ")");
 
 	    String nameOfRunningVM = ManagementFactory.getRuntimeMXBean().getName();
 	    int p = nameOfRunningVM.indexOf('@');

@@ -2,9 +2,12 @@ package net.modevelin.server;
 
 import java.util.Map;
 import java.util.Properties;
+import java.util.logging.Logger;
 
 public class MessageHandler {
 
+	private static final Logger LOGGER = Logger.getLogger(MessageHandler.class.getName()); // Or slf4j?
+	
 	private ClassRedefinitionFactory redefinitionFactory;
 	
 	private Server server;
@@ -26,14 +29,17 @@ public class MessageHandler {
 		// mechanisms for handling this workflow, and for specifying which classes to return
 		// (and where to get the bytecode from), and for which data to return (and where to get
 		// it from) ??
-
+		
+		// Basically, what's the entire mechanism for specifying, executing, and validating
+		// test fixtures on the server side,
+		
 		String command = message.getProperty("COMMAND");
 		if ("REGISTER_AGENT".equals(command)) {
 			String agentName = message.getProperty("NAME");
 			Map<String, byte[]> initialRedefinitions = redefinitionFactory.getRedefinitions(agentName, command);
 			Properties response = new Properties();
 			response.putAll(message);
-			response.put("PAYLOAD", initialRedefinitions);
+			response.put("REDEFINITIONS", initialRedefinitions);
 			String agentServer = response.getProperty("HOST");
 			String agentPort = response.getProperty("PORT");
 			server.send(agentServer, Integer.parseInt(agentPort), response);
@@ -49,6 +55,16 @@ public class MessageHandler {
 			String agentPort = response.getProperty("PORT");
 			server.send(agentServer, Integer.parseInt(agentPort), response);
 			// Now wait for response from app and verify against expected result
+		}
+		else if ("TIBRESPONSE".equals(command)) {
+			String body = message.getProperty("BODY");
+			if ("BAR".equals(body)) {
+				LOGGER.info("TEST PASSED");
+			}
+			else {
+				LOGGER.warning("TEST FAILED: expected [BAR] got [" + body + "]");
+			}
+			
 		}
 		else {
 			throw new RuntimeException("Unrecognised command: " + command);
