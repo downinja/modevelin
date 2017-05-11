@@ -142,22 +142,25 @@ public class AttachOnStartAgent {
 		jarFile.deleteOnExit();
 		
       	// create the jar file
-		FileOutputStream stream = new FileOutputStream(jarFile);
-     	JarOutputStream	out = new JarOutputStream(stream, new Manifest());
+ 		FileOutputStream stream = new FileOutputStream(jarFile);
+ 		JarOutputStream out = new JarOutputStream(stream, new Manifest());
 
       	// write our classes to it
       	for (String className : definitions.keySet()) {
       		byte[] classBytes = definitions.get(className);
+      		if (classBytes == null) {
+      			throw new Exception("No bytes provided by server for class [" + className + "]");
+      		}
 	        JarEntry jarAdd = new JarEntry(className + ".class");
 	        jarAdd.setTime(now);
 	        out.putNextEntry(jarAdd);
-	        out.write(classBytes);
+	        out.write(classBytes); 
       	}
-      	out.close();
-      	stream.close();
+        out.close();
+        stream.close();
         return new JarFile(jarFile);
-	}
-	
+ 	}
+ 	
 	private static File processTmpDirectoryName(final String tmpDirectoryName) {
 		File tmpDirectory = new File(tmpDirectoryName);
 		if (!tmpDirectory.exists()) {

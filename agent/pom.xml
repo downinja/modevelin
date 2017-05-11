@@ -5,11 +5,10 @@
 	
 	<parent>
         <groupId>net.modevelin</groupId>
-        <artifactId>modevelin</artifactId>
+        <artifactId>modevelin-parent</artifactId>
         <version>1.0.0-SNAPSHOT</version>
 	</parent>
 	
-	<groupId>net.modevelin.agent</groupId>
 	<artifactId>modevelin-agent</artifactId>
 	<packaging>jar</packaging>
 	<name>Modevelin Agent</name>

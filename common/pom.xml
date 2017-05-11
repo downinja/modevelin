@@ -5,14 +5,13 @@
 	
 	<parent>
         <groupId>net.modevelin</groupId>
-        <artifactId>modevelin</artifactId>
+        <artifactId>modevelin-parent</artifactId>
         <version>1.0.0-SNAPSHOT</version>
     </parent>
 	
-	<groupId>net.modevelin.common</groupId>
 	<artifactId>modevelin-common</artifactId>
 	<packaging>jar</packaging>
-	<name>Modevelin common</name>
+	<name>Modevelin Common</name>
 
 	<dependencies>
 		
