@@ -1,0 +1,16 @@
+#https://www.websequencediagrams.com/
+
+title Basic Initialisation Sequence
+
+Modevelin Agent->Modevelin Server: Register Agent
+Modevelin Server->Modevelin Agent: Initial Class Redefinitons
+Modevelin Agent->JVM Instrumentation: Register ClassFileTransformer
+JVM Instrumentation->Modevelin Agent: Use my version of TibrvListener?
+Modevelin Agent->JVM Instrumentation: No, use this one
+JVM Instrumentation->TibrvListener: Replace / initialise
+TibrvListener->Modevelin Agent: Let me know any messages from Modevelin Server
+Modevelin Agent->Modevelin Server: Ready
+Modevelin Server->Modevelin Server: Begin test fixture
+Modevelin Server->Modevelin Agent: Here's a #fakenews TibrvMsg
+Modevelin Agent->TibrvListener: Here's a #fakenews TibrvMsg
+TibrvListener->Application: Here's a TibrvMsg
