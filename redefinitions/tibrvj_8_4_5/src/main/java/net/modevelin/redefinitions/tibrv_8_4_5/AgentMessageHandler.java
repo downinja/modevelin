@@ -7,7 +7,6 @@ import com.tibco.tibrv.TibrvMsg;
 import com.tibco.tibrv.TibrvMsgCallback;
 
 import net.modevelin.agent.ExceptionSupport;
-import net.modevelin.agent.MessageHandler;
 import net.modevelin.agent.MessageHandler.MessageProcessor;
 
 public class AgentMessageHandler implements MessageProcessor {
@@ -18,7 +17,6 @@ public class AgentMessageHandler implements MessageProcessor {
 	public AgentMessageHandler(final TibrvListener listener, final TibrvMsgCallback callback) {
 		this.callback = callback;
 		this.listener = listener;
-		MessageHandler.addHandler("TIBMSG", this);
 	}
 	
 	@Override
