@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<redefinitions>
+	<redefinition>
+	    <!--  
+	    	A redefinition basically ties a group of agents to a group of class redefinitions, from potentially multiple providers.
+	    	An app may only need one of these, or many - in the latter case if it needs to map different groupings of redefinitions 
+	    	to different groupings of agents.
+	     -->
+	   <agents>
+		    <agent>tibrvj-demo-client</agent>
+		</agents>
+		<providers>
+			<provider>
+			    <provider-class>net.modevelin.common.bytes.JarBytesProvider</provider-class>
+				<configuration>
+				    <properties>
+						<property>
+						     <name>jarFilePath</name>
+						     <value>C:\Users\john\dev\github\modevelin\redefinitions\tibrvj_8_4_5\target\modevelin-redefinitions-tibrvj_8_4_5-1.0.0-SNAPSHOT.jar</value>
+						</property>
+					</properties>
+					<classes>
+					    <class>com.tibco.tibrv.Tibrv</class>
+					    <class>com.tibco.tibrv.TibrvListener</class>
+					    <class>com.tibco.tibrv.TibrvRvdTransport</class>
+					    <class>com.tibco.tibrv.TibrvTransport</class>
+					    <class>net.modevelin.redefinitions.tibrv_8_4_5.AgentMessageHandler</class>		    
+					</classes>
+				</configuration>
+			</provider>
+		</providers>
+	</redefinition>
+</redefinitions>

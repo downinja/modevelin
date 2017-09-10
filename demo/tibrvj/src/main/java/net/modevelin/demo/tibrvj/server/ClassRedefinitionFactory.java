@@ -1,48 +1,59 @@
 package net.modevelin.demo.tibrvj.server;
 
-import static net.modevelin.common.bytes.support.JarBytesSupport.*;
-
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-//import net.modevelin.common.bytes.BytesProvider;
+import javax.xml.bind.JAXB;
+
+import net.modevelin.common.bytes.BytesProvider;
+import net.modevelin.common.config.Configuration;
+import net.modevelin.common.config.Provider;
+import net.modevelin.common.config.Redefinition;
+import net.modevelin.common.config.Redefinitions;
 
 public class ClassRedefinitionFactory {
 	
-	private final Map<String, byte[]> initialDefinitions;
+	private final Map<String, Map<String, byte[]>> agentRedefinitions;
 	
-	public ClassRedefinitionFactory() throws Exception {
+	@SuppressWarnings("unchecked")
+	public ClassRedefinitionFactory(final String redefinitionsFile) throws Exception {
 
-		this.initialDefinitions = new TreeMap<>();
-
-		// obvs these would be driven by config not hard coded
+		this.agentRedefinitions = new TreeMap<>();
+		Redefinitions redefinitions = unmarshallRedefinitions(redefinitionsFile);
 		
-		//BytesProvider executorsProvider = (BytesProvider)Class.forName("net.modevelin.executors.ThreadPoolExecutorAsmProvider").newInstance();
-		//Map<String, byte[]> bytesMap = executorsProvider.getBytes(null);
-		//for (String className : bytesMap.keySet()) {
-		//	initialDefinitions.put(className, bytesMap.get(className));
-		//}
-
-		String tibrvJarPath = "C:\\Users\\john\\dev\\github\\modevelin\\redefinitions\\tibrvj_8_4_5\\target\\modevelin-redefinitions-tibrvj_8_4_5-1.0.0-SNAPSHOT.jar";
-		byte[] bytes = getJarBytes(tibrvJarPath, "com.tibco.tibrv.TibrvTransport");
-		initialDefinitions.put("com/tibco/tibrv/TibrvTransport", bytes);
-
-		bytes = getJarBytes(tibrvJarPath, "com.tibco.tibrv.TibrvListener");
-		initialDefinitions.put("com/tibco/tibrv/TibrvListener", bytes);
-		
-		bytes = getJarBytes(tibrvJarPath, "net.modevelin.redefinitions.tibrv_8_4_5.AgentMessageHandler");
-		initialDefinitions.put("net/modevelin/redefinitions/tibrv_8_4_5/AgentMessageHandler", bytes);
-
-		bytes = getJarBytes(tibrvJarPath, "com.tibco.tibrv.TibrvRvdTransport");
-		initialDefinitions.put("com/tibco/tibrv/TibrvRvdTransport", bytes);
-
-		bytes = getJarBytes(tibrvJarPath, "com.tibco.tibrv.Tibrv");
-		initialDefinitions.put("com/tibco/tibrv/Tibrv", bytes);
-
+		for (Redefinition redefinition : redefinitions.getRedefinitions()) {
+			for (Provider provider : redefinition.getProviders()) {
+				String providerClass = provider.getProviderClass();
+				Configuration configuration = provider.getConfiguration();
+				List<String> classNames = configuration.getClasses();
+				Class<BytesProvider> bytesProviderClass = (Class<BytesProvider>)Class.forName(providerClass);
+				BytesProvider bytesProvider = bytesProviderClass.getConstructor(Configuration.class).newInstance(configuration);
+				Map<String, byte[]> redefinitionsBytes = bytesProvider.getBytes(classNames);
+				List<String> agents = redefinition.getAgents();
+				for (String agent : agents) {
+					Map<String, byte[]> existingAgentRedefinitions = agentRedefinitions.get(agent);
+					if (existingAgentRedefinitions == null) {
+						existingAgentRedefinitions = new HashMap<>();
+						agentRedefinitions.put(agent, existingAgentRedefinitions);
+					}
+					existingAgentRedefinitions.putAll(redefinitionsBytes);
+				}
+			}
+		}
+	}
+	
+	private Redefinitions unmarshallRedefinitions(final String redefinitionsFile) throws IOException {
+		try (InputStream is = ServerMain.class.getResourceAsStream(redefinitionsFile)) {
+			return JAXB.unmarshal(is, Redefinitions.class);
+		}
 	}
 
 	public Map<String, byte[]> getRedefinitions(final String agentName, final String command) {
-		return initialDefinitions;
+		return agentRedefinitions.get(agentName);
 	}
 
 }

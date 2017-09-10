@@ -13,11 +13,12 @@ public class ServerMain {
 			LOGGER.severe("Usage: net.modevelin.demo.tibrvj.server [listenPort]");
 			System.exit(1);
 		}
+		
 		int receivePort = Integer.parseInt(args[0]);
 		SocketServer server = new SocketServer();
 		server.setReceivePort(receivePort);
 		TibrvjDemoMessageHandler messageHandler = new TibrvjDemoMessageHandler();
-		ClassRedefinitionFactory redefinitionFactory = new ClassRedefinitionFactory();
+		ClassRedefinitionFactory redefinitionFactory = new ClassRedefinitionFactory("/redefinitions.xml");
 		messageHandler.setClassRedefinitionFactory(redefinitionFactory);
 		messageHandler.setServer(server);
 		server.setMessageHandler(messageHandler);
