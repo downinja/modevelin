@@ -1,4 +1,4 @@
-package net.modevelin.common.config;
+package net.modevelin.common.config.redefinitions;
 
 import javax.xml.bind.annotation.XmlElement;
 

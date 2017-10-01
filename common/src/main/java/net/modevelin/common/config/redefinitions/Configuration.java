@@ -1,4 +1,4 @@
-package net.modevelin.common.config;
+package net.modevelin.common.config.redefinitions;
 
 import java.util.ArrayList;
 import java.util.List;

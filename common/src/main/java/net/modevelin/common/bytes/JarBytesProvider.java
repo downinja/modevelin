@@ -6,7 +6,7 @@ import java.util.Map;
 
 import net.modevelin.common.ExceptionSupport;
 import net.modevelin.common.bytes.support.JarBytesSupport;
-import net.modevelin.common.config.Configuration;
+import net.modevelin.common.config.redefinitions.Configuration;
 
 public class JarBytesProvider extends JarBytesSupport implements BytesProvider {
 

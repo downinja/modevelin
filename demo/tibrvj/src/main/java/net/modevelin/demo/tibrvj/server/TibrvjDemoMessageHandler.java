@@ -40,7 +40,7 @@ public class TibrvjDemoMessageHandler implements MessageHandler {
 		String command = message.getProperty("COMMAND");
 		if ("REGISTER_AGENT".equals(command)) {
 			String agentName = message.getProperty("NAME");
-			Map<String, byte[]> initialRedefinitions = redefinitionFactory.getRedefinitions(agentName, command);
+			Map<String, byte[]> initialRedefinitions = redefinitionFactory.getRedefinitions(command, agentName);
 			Properties response = new Properties();
 			response.putAll(message);
 			response.put("REDEFINITIONS", initialRedefinitions);

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <redefinitions>
-	<redefinition>
+	<redefinition id="tibrvj845example">
 	    <!--  
 	    	A redefinition basically ties a group of agents to a group of class redefinitions, from potentially multiple providers.
 	    	An app may only need one of these, or many - in the latter case if it needs to map different groupings of redefinitions 

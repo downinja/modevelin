@@ -1,4 +1,4 @@
-package net.modevelin.common.config;
+package net.modevelin.common.config.fixtures;
 
 import java.util.Collections;
 import java.util.List;

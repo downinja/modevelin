@@ -1,8 +1,8 @@
-package net.modevelin.common.config;
+package net.modevelin.common.config.redefinitions;
 
 import javax.xml.bind.annotation.XmlValue;
 
-public class Agent {
+public class Class {
 
 	@XmlValue
 	private String name;

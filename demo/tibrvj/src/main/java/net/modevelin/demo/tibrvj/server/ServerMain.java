@@ -18,7 +18,7 @@ public class ServerMain {
 		SocketServer server = new SocketServer();
 		server.setReceivePort(receivePort);
 		TibrvjDemoMessageHandler messageHandler = new TibrvjDemoMessageHandler();
-		ClassRedefinitionFactory redefinitionFactory = new ClassRedefinitionFactory("/redefinitions.xml");
+		ClassRedefinitionFactory redefinitionFactory = new ClassRedefinitionFactory("/fixtures.xml", "/redefinitions.xml");
 		messageHandler.setClassRedefinitionFactory(redefinitionFactory);
 		messageHandler.setServer(server);
 		server.setMessageHandler(messageHandler);

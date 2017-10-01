@@ -1,30 +1,25 @@
-package net.modevelin.common.config;
+package net.modevelin.common.config.redefinitions;
 
-import java.util.ArrayList;
 import java.util.List;
 
+import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(name="redefinition")
 public class Redefinition {
 		
-	@XmlElement(name="agents")
-	private Agents agents;
+	@XmlAttribute(name="id")
+	private String id;
+
+	public String getId() {
+		return id;
+	}
 	
 	@XmlElement(name="providers")
 	private Providers providers;
 
-	public List<String> getAgents() {
-		List<String> agentNames = new ArrayList<>();
-		for (Agent agent : agents.getAgents()) {
-			agentNames.add(agent.getName());
-		}
-		return agentNames;
-	}
-	
 	public List<Provider> getProviders() {
 		return providers.getProviders();
 	}
-		
 }
