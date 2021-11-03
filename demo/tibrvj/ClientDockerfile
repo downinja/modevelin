@@ -1,0 +1,8 @@
+FROM openjdk:17
+
+WORKDIR /usr/modevelin
+
+COPY target/dependency/modevelin-agent-*.jar ./modevelin-agent.jar
+COPY target/modevelin-demo-tibrvj-*.jar ./modevelin-demo-tibrvj.jar
+
+#CMD ["java", "-javaagent:modevelin-agent-1.0.0-SNAPSHOT.jar=name=tibrvj-demo-client&host=0.0.0.0&port=8888", "-cp", "modevelin-demo-tibrvj-1.0.0-SNAPSHOT.jar", "net.modevelin.demo.tibrvj.ClientMain"]

@@ -9,12 +9,12 @@ import com.tibco.tibrv.TibrvMsgCallback;
 import net.modevelin.agent.ExceptionSupport;
 import net.modevelin.agent.MessageHandler.MessageProcessor;
 
-public class AgentMessageHandler implements MessageProcessor {
+public class AgentMessageProcessor implements MessageProcessor {
 
 	private final TibrvListener listener;
 	private final TibrvMsgCallback callback;
 		
-	public AgentMessageHandler(final TibrvListener listener, final TibrvMsgCallback callback) {
+	public AgentMessageProcessor(final TibrvListener listener, final TibrvMsgCallback callback) {
 		this.callback = callback;
 		this.listener = listener;
 	}

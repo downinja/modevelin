@@ -1,0 +1,8 @@
+FROM openjdk:17
+
+WORKDIR /usr/modevelin
+
+COPY target/dependency/modevelin-redefinitions-tibrvj_8_4_5-*.jar ./modevelin-redefinitions-tibrvj_8_4_5.jar
+COPY target/modevelin-demo-tibrvj-*.jar ./modevelin-demo-tibrvj.jar
+
+#CMD ["java", "-cp", "modevelin-demo-tibrvj-1.0.0-SNAPSHOT.jar", "net.modevelin.demo.tibrvj.server.ServerMain", "8888"]

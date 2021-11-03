@@ -6,25 +6,25 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class MessageHandler {
 
-	private static Map<String, MessageProcessor> commandMap = new ConcurrentHashMap<>();
+	private static final Map<String, MessageProcessor> COMMAND_MAP = new ConcurrentHashMap<>();
 	
-	public static interface MessageProcessor {
+	public interface MessageProcessor {
 		void process(Properties message); 
 	}
 	
 	public static void addHandler(final String topic, final MessageProcessor command) {
-		commandMap.put(topic, command); // TODO allow many subscriptions to one topic
+		COMMAND_MAP.put(topic, command); // TODO allow many subscriptions to one topic
 	}
 	
 	public static void removeHandler(final String topic, final MessageProcessor command) {
-		commandMap.remove(topic); // TODO allow many subscriptions to one topic
+		COMMAND_MAP.remove(topic); // TODO allow many subscriptions to one topic
 	}
 	
 	static void handle(final Properties message) {
 		String responseType = message.getProperty("COMMAND");
-		for (String topic : commandMap.keySet()) {
+		for (String topic : COMMAND_MAP.keySet()) {
 			if (topic.equals(responseType)) {
-				MessageProcessor processor = commandMap.get(topic);
+				MessageProcessor processor = COMMAND_MAP.get(topic);
 				processor.process(message);
 			}
 		}

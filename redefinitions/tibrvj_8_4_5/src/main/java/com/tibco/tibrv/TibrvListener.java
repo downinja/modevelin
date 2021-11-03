@@ -4,7 +4,7 @@ import java.util.Properties;
 
 import net.modevelin.agent.AgentServer;
 import net.modevelin.agent.MessageHandler;
-import net.modevelin.redefinitions.tibrv_8_4_5.AgentMessageHandler;
+import net.modevelin.redefinitions.tibrv_8_4_5.AgentMessageProcessor;
 
 /**
  * Redefinition of com.tibco.tibrv.TibrvListener. 
@@ -17,9 +17,9 @@ import net.modevelin.redefinitions.tibrv_8_4_5.AgentMessageHandler;
  * The methods below are the ones needed to get the demo working, most likely these 
  * would need to be expanded to provide a more general purpose drop-in replacement for 
  * this class. Ideally, we would use the entire source file and just surgically remove
- * the calls we need to - so that potentially we could attache this redefinition after
+ * the calls we need to - so that potentially we could attach this redefinition after
  * the original class has been loaded. (In such cases, the JVM enforces that the 
- * redefined class is structurally identical to the one that it's replacing.) However 
+ * redefined class is structurally identical to the one that it's replacing.) However,
  * this would probably bump into licensing issues if the code is not open source.
  *
  */
@@ -34,7 +34,7 @@ public class TibrvListener {
 		 
 		// TODO, we probably need to make use of queue/subject params to mimic
 		// tibrv behaviour in sending the right messages to the right listeners.
-		MessageHandler.addHandler("TIBMSG", new AgentMessageHandler(this, callback));
+		MessageHandler.addHandler("TIBMSG", new AgentMessageProcessor(this, callback));
 		Properties props = new Properties();
 		// TODO - this needs to be more specific than just "READY",
 		// it needs to be that this specific function (TibrvListener) 

@@ -1,14 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<fixtures>
-	<fixture>
+<registrations>
+	<registration>
 	   	<agents>
 		    <agent>tibrvj-demo-client</agent>
 		</agents>
-		<messageTypes>
-		    <messageType>REGISTER_AGENT</messageType>
-		</messageTypes>
 		<redefinitions>
 		    <redefinition>tibrvj845example</redefinition>
 		</redefinitions>
-	</fixture>
-</fixtures>
+	</registration>
+</registrations>

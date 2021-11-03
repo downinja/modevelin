@@ -56,6 +56,10 @@ public class ClientMain {
 			// send a response and pick up in server
 			try {
 				TibrvMsg response = new TibrvMsg();
+				// TODO, can we pass messageId through on the message? Might have to prepend it to some supported key or other such hackery
+				// Bear in mind, that if this were a proper test then we'd be hooking into some app code, here - rather than
+				// just manually populating a response. (TODO, expand the demo to be a more realistic use case)
+				response.add("modevelin.message.id", "1");
 				response.add("BODY", "BAR");
 				response.setSendSubject("SENDSUBJ");
 				response.setReplySubject("RECEIVESUBJ");

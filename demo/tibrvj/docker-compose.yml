@@ -1,0 +1,17 @@
+version: "3.9"
+services:
+  modevelin-server:
+    image: modevelin-demo-tibrvj-server
+    build:
+      context: .
+      dockerfile: ServerDockerfile
+    ports:
+      - "8888:8888"
+    command: ["java", "-cp", "modevelin-demo-tibrvj.jar", "net.modevelin.demo.tibrvj.server.ServerMain", "8888"]
+  modevelin-agent:
+    image: modevelin-demo-tibrvj-client
+    build:
+      context: .
+      dockerfile: ClientDockerfile
+    command: ["java", "-javaagent:modevelin-agent.jar=name=tibrvj-demo-client&host=modevelin-server&port=8888", "-cp", "modevelin-demo-tibrvj.jar", "net.modevelin.demo.tibrvj.ClientMain"]
+    depends_on: [modevelin-server]

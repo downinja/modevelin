@@ -12,13 +12,64 @@
 	<artifactId>modevelin-demo-tibrvj</artifactId>
 	<packaging>jar</packaging>
 	<name>Demos: Tibrvj</name>
+
+	<build>
+		<!--resources>
+			<resource>
+				<directory>src/main/resources</directory>
+			</resource>
+			<resource>
+				<directory>docker</directory>
+				<filtering>true</filtering>
+				<targetPath>${project.build.directory}</targetPath>
+			</resource>
+		</resources-->
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-shade-plugin</artifactId>
+				<version>3.2.4</version>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>shade</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<version>3.2.0</version>
+				<executions>
+					<execution>
+						<id>copy-dependencies</id>
+						<phase>package</phase>
+						<goals>
+							<goal>copy</goal>
+						</goals>
+						<configuration>
+							<artifactItems>
+								<artifactItem>
+									<groupId>net.modevelin</groupId>
+									<artifactId>modevelin-agent</artifactId>
+									<version>${project.version}</version>
+								</artifactItem>
+								<artifactItem>
+									<groupId>net.modevelin.redefinitions</groupId>
+									<artifactId>modevelin-redefinitions-tibrvj_8_4_5</artifactId>
+									<version>${project.version}</version>
+								</artifactItem>
+							</artifactItems>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
 	
 	<dependencies>
-		<dependency>
-			<groupId>net.modevelin</groupId>
-			<artifactId>modevelin-agent</artifactId>
-			<version>${project.version}</version>
-		</dependency>
 		<dependency>
 			<groupId>net.modevelin</groupId>
 			<artifactId>modevelin-server</artifactId>
@@ -28,6 +79,16 @@
 	  		<groupId>tibrvj</groupId>
   			<artifactId>tibrvj</artifactId>
   			<version>8.4.5</version>
+		</dependency>
+		<dependency>
+			<groupId>org.glassfish.jaxb</groupId>
+			<artifactId>jaxb-runtime</artifactId>
+			<version>3.0.2</version>
+		</dependency>
+		<dependency>
+			<groupId>io.cucumber</groupId>
+			<artifactId>cucumber-java</artifactId>
+			<version>7.0.0</version>
 		</dependency>
 	</dependencies>
 

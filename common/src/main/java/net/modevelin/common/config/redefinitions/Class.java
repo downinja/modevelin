@@ -1,6 +1,6 @@
 package net.modevelin.common.config.redefinitions;
 
-import javax.xml.bind.annotation.XmlValue;
+import jakarta.xml.bind.annotation.XmlValue;
 
 public class Class {
 
