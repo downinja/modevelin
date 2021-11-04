@@ -5,8 +5,8 @@ import net.modevelin.common.config.redefinitions.Configuration;
 import net.modevelin.common.config.redefinitions.Provider;
 import net.modevelin.common.config.redefinitions.Redefinition;
 import net.modevelin.common.config.redefinitions.Redefinitions;
-import net.modevelin.server.config.registrations.Registration;
-import net.modevelin.server.config.registrations.Registrations;
+import net.modevelin.common.config.registrations.Registration;
+import net.modevelin.common.config.registrations.Registrations;
 
 import java.util.HashMap;
 import java.util.List;

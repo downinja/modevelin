@@ -1,7 +1,7 @@
 package net.modevelin.server;
 
 import net.modevelin.common.config.redefinitions.Redefinitions;
-import net.modevelin.server.config.registrations.Registrations;
+import net.modevelin.common.config.registrations.Registrations;
 import net.modevelin.server.endpoints.Endpoint;
 import org.slf4j.Logger;
 
