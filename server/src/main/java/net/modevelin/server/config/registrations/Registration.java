@@ -1,4 +1,4 @@
-package net.modevelin.common.config.registrations;
+package net.modevelin.server.config.registrations;
 
 import java.util.ArrayList;
 import java.util.List;

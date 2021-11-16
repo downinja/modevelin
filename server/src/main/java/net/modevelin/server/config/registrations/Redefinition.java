@@ -1,4 +1,4 @@
-package net.modevelin.common.config.registrations;
+package net.modevelin.server.config.registrations;
 
 import jakarta.xml.bind.annotation.XmlValue;
 

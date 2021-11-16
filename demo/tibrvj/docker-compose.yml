@@ -7,7 +7,7 @@ services:
       dockerfile: ServerDockerfile
     ports:
       - "8888:8888"
-    command: ["java", "-cp", "modevelin-demo-tibrvj.jar", "net.modevelin.demo.tibrvj.server.ServerMain", "8888"]
+    command: ["java", "-cp", "modevelin-demo-tibrvj.jar", "io.cucumber.core.cli.Main", "/usr/modevelin/cucumber/feature", "--glue", "net.modevelin.demo.tibrvj.cucumber"]
   modevelin-agent:
     image: modevelin-demo-tibrvj-client
     build:

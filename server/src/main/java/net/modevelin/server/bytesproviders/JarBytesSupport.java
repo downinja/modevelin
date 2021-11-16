@@ -1,4 +1,4 @@
-package net.modevelin.common.bytes.support;
+package net.modevelin.server.bytesproviders;
 
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;

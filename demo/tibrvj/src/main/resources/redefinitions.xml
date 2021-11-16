@@ -11,13 +11,13 @@
 		</agents>
 		<providers>
 			<provider>
-			    <provider-class>net.modevelin.common.bytes.JarBytesProvider</provider-class>
+			    <provider-class>net.modevelin.server.bytesproviders.JarBytesProvider</provider-class>
 				<configuration>
 				    <properties>
 						<property>
 							<name>jarFilePath</name>
-						    <value>C:\Users\john\dev\github\modevelin\redefinitions\tibrvj_8_4_5\target\modevelin-redefinitions-tibrvj_8_4_5-1.0.0-SNAPSHOT.jar</value>
-							<!--value>//usr/modevelin/modevelin-redefinitions-tibrvj_8_4_5.jar</value-->
+						    <!--value>C:\Users\john\dev\github\modevelin\redefinitions\tibrvj_8_4_5\target\modevelin-redefinitions-tibrvj_8_4_5-1.0.0-SNAPSHOT.jar</value-->
+							<value>//usr/modevelin/modevelin-redefinitions-tibrvj_8_4_5.jar</value>
 						</property>
 					</properties>
 					<classes>

@@ -9,8 +9,8 @@ import net.modevelin.server.endpoints.socket.DefaultSocketEndpoint;
 import java.util.Properties;
 import java.util.logging.Logger;
 
-import static net.modevelin.server.config.jaxb.JaxbConfigUtil.unmarshallRedefinitions;
-import static net.modevelin.server.config.jaxb.JaxbConfigUtil.unmarshallRegistrations;
+import static net.modevelin.server.config.JaxbConfigUtil.unmarshallRedefinitions;
+import static net.modevelin.server.config.JaxbConfigUtil.unmarshallRegistrations;
 
 public class Steps {
 

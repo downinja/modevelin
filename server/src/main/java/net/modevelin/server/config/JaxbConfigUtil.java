@@ -1,8 +1,8 @@
-package net.modevelin.server.config.jaxb;
+package net.modevelin.server.config;
 
 import jakarta.xml.bind.JAXB;
-import net.modevelin.common.config.redefinitions.Redefinitions;
-import net.modevelin.common.config.registrations.Registrations;
+import net.modevelin.server.config.redefinitions.Redefinitions;
+import net.modevelin.server.config.registrations.Registrations;
 
 import java.io.IOException;
 import java.io.InputStream;

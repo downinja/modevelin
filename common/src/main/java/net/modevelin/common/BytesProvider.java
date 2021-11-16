@@ -1,4 +1,4 @@
-package net.modevelin.common.bytes;
+package net.modevelin.common;
 
 import java.util.List;
 import java.util.Map;

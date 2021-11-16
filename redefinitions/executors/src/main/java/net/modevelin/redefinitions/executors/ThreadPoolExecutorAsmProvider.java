@@ -28,7 +28,7 @@ import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Type;
 
-import net.modevelin.common.bytes.BytesProvider;
+import net.modevelin.common.BytesProvider;
 
 /**
  * Implementation of BytesProvider which returns a modified version of ThreadPoolExecutor.

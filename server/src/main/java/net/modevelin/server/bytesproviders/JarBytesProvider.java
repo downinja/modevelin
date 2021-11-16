@@ -1,12 +1,12 @@
-package net.modevelin.common.bytes;
+package net.modevelin.server.bytesproviders;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import net.modevelin.common.ExceptionSupport;
-import net.modevelin.common.bytes.support.JarBytesSupport;
-import net.modevelin.common.config.redefinitions.Configuration;
+import net.modevelin.common.BytesProvider;
+import net.modevelin.server.config.redefinitions.Configuration;
 
 public class JarBytesProvider extends JarBytesSupport implements BytesProvider {
 

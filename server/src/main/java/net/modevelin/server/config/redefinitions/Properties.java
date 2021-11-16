@@ -1,4 +1,4 @@
-package net.modevelin.common.config.redefinitions;
+package net.modevelin.server.config.redefinitions;
 
 import java.util.Collections;
 import java.util.List;

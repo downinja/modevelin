@@ -1,9 +1,11 @@
-package net.modevelin.common.bytes;
+package net.modevelin.server.bytesproviders;
+
+import net.modevelin.common.BytesProvider;
 
 import java.util.List;
 import java.util.Map;
 
-public class ClasspathBytesProvider implements BytesProvider {
+public class FileBytesProvider implements BytesProvider {
 
 	@Override
 	public Map<String, byte[]> getBytes(List<String> classNames) {

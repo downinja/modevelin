@@ -1,12 +1,12 @@
 package net.modevelin.server;
 
-import net.modevelin.common.bytes.BytesProvider;
-import net.modevelin.common.config.redefinitions.Configuration;
-import net.modevelin.common.config.redefinitions.Provider;
-import net.modevelin.common.config.redefinitions.Redefinition;
-import net.modevelin.common.config.redefinitions.Redefinitions;
-import net.modevelin.common.config.registrations.Registration;
-import net.modevelin.common.config.registrations.Registrations;
+import net.modevelin.common.BytesProvider;
+import net.modevelin.server.config.redefinitions.Configuration;
+import net.modevelin.server.config.redefinitions.Provider;
+import net.modevelin.server.config.redefinitions.Redefinition;
+import net.modevelin.server.config.redefinitions.Redefinitions;
+import net.modevelin.server.config.registrations.Registration;
+import net.modevelin.server.config.registrations.Registrations;
 
 import java.util.HashMap;
 import java.util.List;
